@@ -53,6 +53,7 @@ import org.spout.vanilla.command.AdministrationCommands;
 import org.spout.vanilla.command.TestCommands;
 import org.spout.vanilla.configuration.VanillaConfiguration;
 import org.spout.vanilla.configuration.WorldConfiguration;
+import org.spout.vanilla.controller.living.player.GameMode;
 import org.spout.vanilla.controller.world.PointObserver;
 import org.spout.vanilla.controller.world.sky.NetherSky;
 import org.spout.vanilla.controller.world.sky.NormalSky;
@@ -151,9 +152,14 @@ public class VanillaPlugin extends CommonPlugin {
 			NormalGenerator normGen = new NormalGenerator();
 			String name = WorldConfiguration.NORMAL_NAME.getString();
 			World normal = game.loadWorld(name, normGen);
-			normal.getDataMap().put("name", name);
+			//load/create characteristics
+			if (normal.getAge() <= 0) {
+				normal.getDataMap().put("name", VanillaConfiguration.WORLDS.NORMAL_NAME.getString());
+				normal.getDataMap().put("gamemode", GameMode.valueOf(VanillaConfiguration.WORLDS.NORMAL_GAMEMODE.getString()));
+				normal.getDataMap().put("difficulty", VanillaConfiguration.WORLDS.NORMAL_DIFFICULTY.getString())
+			}
 			worlds.add(normal);
-			spawns.add(normGen.getSafeSpawn(normal));
+
 		}
 
 		if (VanillaConfiguration.WORLDS.FLAT_LOAD.getBoolean()) {
@@ -183,7 +189,6 @@ public class VanillaPlugin extends CommonPlugin {
 		for (int i = 0; i < worlds.size(); i++) {
 			int progress = 0;
 			World world = worlds.get(i);
-			Point point = spawns.get(i);
 			int cx = (point.getBlockX() / Chunk.CHUNK_SIZE) - 1;
 			int cy = (point.getBlockY() / Chunk.CHUNK_SIZE) - 1;
 			int cz = (point.getBlockZ() / Chunk.CHUNK_SIZE) - 1;

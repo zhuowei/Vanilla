@@ -256,17 +256,17 @@ public class VanillaNetworkSynchronizer extends NetworkSynchronizer implements P
 	protected void worldChanged(World world) {
 		//Grab world characteristics.
 		Byte gamemode = (Byte) world.getDataMap().get("gamemode", 2);
-		Byte worldDifficulty = (Byte) world.getDataMap().get("difficult", 1); //Normal difficulty
+		Byte worldDifficulty = (Byte) world.getDataMap().get("difficulty", 1); //Normal difficulty
 		Integer dimensionBit = (Integer) world.getDataMap().get("dimensionbit", 1); //Normal sky
-		Integer worldHeight = (Integer) world.getDataMap().get("height", 256); //TODO Does Minecraft force 256 height always?
 		String worldType = (String) world.getDataMap().get("type", "DEFAULT");
 		Transform spawn = (Transform) world.getDataMap().get("spawnpoint", new Transform(new Point(world, 1, 80, 1), Quaternion.IDENTITY, Vector3.ONE));
 
+		//TODO Handle infinite height
 		if (first) {
 			first = false;
 			int entityId = owner.getEntity().getId();
 			VanillaPlayer vc = (VanillaPlayer) owner.getEntity().getController();
-			LoginRequestMessage idMsg = new LoginRequestMessage(entityId, owner.getName(), gamemode, dimensionBit, worldDifficulty, worldHeight, session.getGame().getMaxPlayers(), worldType);
+			LoginRequestMessage idMsg = new LoginRequestMessage(entityId, owner.getName(), gamemode, dimensionBit, worldDifficulty, 256, session.getGame().getMaxPlayers(), worldType);
 			owner.getSession().send(idMsg, true);
 			owner.getSession().setState(State.GAME);
 			for (int slot = 0; slot < 4; slot++) {
@@ -280,7 +280,7 @@ public class VanillaNetworkSynchronizer extends NetworkSynchronizer implements P
 				owner.getSession().send(EEMsg);
 			}
 		} else {
-			owner.getSession().send(new RespawnMessage(dimensionBit,  worldDifficulty, gamemode, worldHeight, worldType));
+			owner.getSession().send(new RespawnMessage(dimensionBit,  worldDifficulty, gamemode, 256, worldType));
 		}
 
 		if (world != null) {
