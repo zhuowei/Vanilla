@@ -38,6 +38,7 @@ import org.spout.vanilla.material.block.redstone.RedstoneTarget;
 import org.spout.vanilla.protocol.VanillaNetworkSynchronizer;
 import org.spout.vanilla.protocol.msg.PlayEffectMessage;
 import org.spout.vanilla.util.RedstoneUtil;
+import org.spout.vanilla.util.VanillaNetworkUtil;
 import org.spout.vanilla.util.VanillaPlayerUtil;
 
 public class DoorBlock extends GroundAttachable implements Openable, RedstoneTarget {
@@ -57,7 +58,7 @@ public class DoorBlock extends GroundAttachable implements Openable, RedstoneTar
 			boolean powered = this.isReceivingPower(block);
 			if (powered != this.isOpen(block)) {
 				this.setOpen(block, powered);
-				VanillaNetworkSynchronizer.playBlockEffect(block, null, PlayEffectMessage.Messages.RANDOM_DOOR);
+				VanillaNetworkUtil.playBlockEffect(block, null, PlayEffectMessage.Messages.RANDOM_DOOR);
 			}
 		}
 	}

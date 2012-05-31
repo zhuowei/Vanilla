@@ -45,6 +45,8 @@ import org.spout.vanilla.protocol.msg.PlayEffectMessage;
 import org.spout.vanilla.util.RedstonePowerMode;
 import org.spout.vanilla.util.VanillaPlayerUtil;
 
+import static org.spout.vanilla.util.VanillaNetworkUtil.playBlockEffect;
+
 public class Lever extends AbstractAttachable implements RedstoneSource {
 	public Lever(String name, int id) {
 		super(name, id);
@@ -70,9 +72,9 @@ public class Lever extends AbstractAttachable implements RedstoneSource {
 		}
 		this.toggle(block);
 		if (this.isDown(block)) {
-			VanillaNetworkSynchronizer.playBlockEffect(block, entity, PlayEffectMessage.Messages.RANDOM_CLICK_1);
+			playBlockEffect(block, entity, PlayEffectMessage.Messages.RANDOM_CLICK_1);
 		} else {
-			VanillaNetworkSynchronizer.playBlockEffect(block, entity, PlayEffectMessage.Messages.RANDOM_CLICK_2);
+			playBlockEffect(block, entity, PlayEffectMessage.Messages.RANDOM_CLICK_2);
 		}
 		this.doRedstoneUpdates(block);
 	}

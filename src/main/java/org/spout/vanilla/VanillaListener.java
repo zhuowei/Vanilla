@@ -29,7 +29,6 @@ package org.spout.vanilla;
 import java.util.HashSet;
 
 import org.spout.api.Source;
-import org.spout.api.Spout;
 import org.spout.api.entity.Controller;
 import org.spout.api.entity.Entity;
 import org.spout.api.event.EventHandler;
@@ -37,7 +36,6 @@ import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.Result;
 import org.spout.api.event.entity.EntityHealthChangeEvent;
-import org.spout.api.event.entity.EntityMoveEvent;
 import org.spout.api.event.entity.EntitySpawnEvent;
 import org.spout.api.event.player.PlayerJoinEvent;
 import org.spout.api.event.player.PlayerLeaveEvent;
@@ -64,9 +62,8 @@ import org.spout.vanilla.material.VanillaMaterials;
 import org.spout.vanilla.protocol.VanillaNetworkSynchronizer;
 import org.spout.vanilla.protocol.msg.UpdateHealthMessage;
 import org.spout.vanilla.runnable.BlockScheduler;
+import org.spout.vanilla.util.VanillaNetworkUtil;
 import org.spout.vanilla.util.VanillaPlayerUtil;
-
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.sendPacket;
 
 public class VanillaListener implements Listener {
 	private final VanillaPlugin plugin;
@@ -92,7 +89,7 @@ public class VanillaListener implements Listener {
 
 		// Set protocol and send packets
 		if (vanillaPlayer.isSurvival()) {
-			sendPacket(vanillaPlayer.getPlayer(), new UpdateHealthMessage((short) vanillaPlayer.getHealth(), vanillaPlayer.getHunger(), vanillaPlayer.getFoodSaturation()));
+			VanillaNetworkUtil.sendPacket(vanillaPlayer.getPlayer(), new UpdateHealthMessage((short) vanillaPlayer.getHealth(), vanillaPlayer.getHunger(), vanillaPlayer.getFoodSaturation()));
 		}
 
 		// Make them visible to everyone by default
@@ -172,7 +169,7 @@ public class VanillaListener implements Listener {
 			VanillaPlayer sp = (VanillaPlayer) c;
 			short health = (short) sp.getHealth();
 			health += (short) event.getChange();
-			sendPacket(sp.getPlayer(), new UpdateHealthMessage(health, sp.getHunger(), sp.getFoodSaturation()));
+			VanillaNetworkUtil.sendPacket(sp.getPlayer(), new UpdateHealthMessage(health, sp.getHunger(), sp.getFoodSaturation()));
 		}
 	}
 }

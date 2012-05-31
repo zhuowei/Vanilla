@@ -46,6 +46,8 @@ import org.spout.vanilla.runnable.BlockScheduler;
 import org.spout.vanilla.util.RedstonePowerMode;
 import org.spout.vanilla.util.VanillaPlayerUtil;
 
+import static org.spout.vanilla.util.VanillaNetworkUtil.playBlockEffect;
+
 public class StoneButton extends AbstractAttachable implements PointAttachable, ScheduleUpdated, RedstoneSource {
 	public StoneButton(String name, int id) {
 		super(name, id);
@@ -55,7 +57,7 @@ public class StoneButton extends AbstractAttachable implements PointAttachable, 
 	@Override
 	public void onDelayedUpdate(Block block) {
 		this.setPressed(block, false);
-		VanillaNetworkSynchronizer.playBlockEffect(block, null, PlayEffectMessage.Messages.RANDOM_CLICK_2);
+		playBlockEffect(block, null, PlayEffectMessage.Messages.RANDOM_CLICK_2);
 		this.doRedstoneUpdates(block);
 	}
 
@@ -97,7 +99,7 @@ public class StoneButton extends AbstractAttachable implements PointAttachable, 
 				this.setPressed(block, true);
 				this.doRedstoneUpdates(block);
 				BlockScheduler.schedule(block, 20);
-				VanillaNetworkSynchronizer.playBlockEffect(block, entity, PlayEffectMessage.Messages.RANDOM_CLICK_1);
+				playBlockEffect(block, entity, PlayEffectMessage.Messages.RANDOM_CLICK_1);
 			}
 		}
 	}

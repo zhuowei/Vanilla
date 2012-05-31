@@ -65,13 +65,12 @@ import org.spout.vanilla.protocol.msg.SpawnPlayerMessage;
 import org.spout.vanilla.protocol.msg.SpawnPositionMessage;
 import org.spout.vanilla.protocol.msg.UpdateHealthMessage;
 import org.spout.vanilla.util.EnchantmentUtil;
+import org.spout.vanilla.util.VanillaNetworkUtil;
 import org.spout.vanilla.util.VanillaPlayerUtil;
 import org.spout.vanilla.window.DefaultWindow;
 import org.spout.vanilla.window.Window;
 
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.broadcastPacket;
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.sendPacket;
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.sendPacketsToNearbyPlayers;
+import static org.spout.vanilla.util.VanillaNetworkUtil.sendPacket;
 
 /**
  * Represents a player on a server with the VanillaPlugin; specific methods to Vanilla.
@@ -141,7 +140,7 @@ public class VanillaPlayer extends Human implements PlayerController {
 		}
 
 		if (lastPing++ > VanillaConfiguration.PLAYER_TIMEOUT_TICKS.getInt() / 2) {
-			sendPacket(player, new KeepAliveMessage(getRandom().nextInt()));
+			VanillaNetworkUtil.sendPacket(player, new KeepAliveMessage(getRandom().nextInt()));
 			lastPing = 0;
 		}
 
@@ -152,7 +151,7 @@ public class VanillaPlayer extends Human implements PlayerController {
 		}
 
 		if (lastUserList++ > 20) {
-			broadcastPacket(new PlayerListMessage(tabListName, true, ping));
+			VanillaNetworkUtil.broadcastPacket(new PlayerListMessage(tabListName, true, ping));
 			lastUserList = 0;
 		}
 
@@ -165,7 +164,7 @@ public class VanillaPlayer extends Human implements PlayerController {
 
 	private void survivalTick(float dt) {
 		if (isDigging && (getDiggingTicks() % 20) == 0) {
-			sendPacketsToNearbyPlayers(getParent(), getParent().getViewDistance(), new AnimationMessage(getParent().getId(), AnimationMessage.ANIMATION_SWING_ARM));
+			VanillaNetworkUtil.sendPacketsToNearbyPlayers(getParent(), getParent().getViewDistance(), new AnimationMessage(getParent().getId(), AnimationMessage.ANIMATION_SWING_ARM));
 		}
 
 		if ((distanceMoved += getPreviousPosition().distanceSquared(getParent().getPosition())) >= 1) {
@@ -585,7 +584,7 @@ public class VanillaPlayer extends Human implements PlayerController {
 		}
 		previousDiggingTime = getDiggingTime();
 		isDigging = false;
-		sendPacketsToNearbyPlayers(getParent(), getParent().getViewDistance(), new AnimationMessage(getParent().getId(), AnimationMessage.ANIMATION_NONE));
+		VanillaNetworkUtil.sendPacketsToNearbyPlayers(getParent(), getParent().getViewDistance(), new AnimationMessage(getParent().getId(), AnimationMessage.ANIMATION_NONE));
 		if (!position.equals(diggingPosition)) {
 			return false;
 		}

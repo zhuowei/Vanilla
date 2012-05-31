@@ -146,11 +146,12 @@ public class VanillaPlugin extends CommonPlugin {
 
 	private void setupWorlds() {
 		ArrayList<World> worlds = new ArrayList<World>();
-		ArrayList<Point> spawns = new ArrayList<Point>();
 
 		if (VanillaConfiguration.WORLDS.NORMAL_LOAD.getBoolean()) {
 			NormalGenerator normGen = new NormalGenerator();
-			World normal = game.loadWorld(WorldConfiguration.NORMAL_NAME.getString(), normGen);
+			String name = WorldConfiguration.NORMAL_NAME.getString();
+			World normal = game.loadWorld(name, normGen);
+			normal.getDataMap().put("name", name);
 			worlds.add(normal);
 			spawns.add(normGen.getSafeSpawn(normal));
 		}

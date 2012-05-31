@@ -30,7 +30,7 @@ import org.spout.vanilla.controller.VanillaBlockController;
 import org.spout.vanilla.controller.VanillaControllerTypes;
 import org.spout.vanilla.inventory.block.ChestInventory;
 import org.spout.vanilla.material.VanillaMaterials;
-import org.spout.vanilla.protocol.VanillaNetworkSynchronizer;
+import org.spout.vanilla.util.VanillaNetworkUtil;
 
 public class Chest extends VanillaBlockController {
 	private final ChestInventory inventory;
@@ -56,7 +56,7 @@ public class Chest extends VanillaBlockController {
 	public void setOpened(boolean opened) {
 		this.opened = opened;
 		byte data = opened ? (byte) 1 : 0;
-		VanillaNetworkSynchronizer.playBlockAction(getBlock(), (byte) 1, data);
+		VanillaNetworkUtil.playBlockAction(getBlock(), (byte) 1, data);
 	}
 
 	public boolean isOpened() {

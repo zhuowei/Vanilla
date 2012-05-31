@@ -53,8 +53,9 @@ import org.spout.vanilla.controller.source.HealthChangeReason;
 import org.spout.vanilla.event.entity.EntityCombustEvent;
 import org.spout.vanilla.protocol.msg.AnimationMessage;
 import org.spout.vanilla.protocol.msg.EntityStatusMessage;
+import org.spout.vanilla.util.VanillaNetworkUtil;
 
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.broadcastPacket;
+import static org.spout.vanilla.util.VanillaNetworkUtil.broadcastPacket;
 
 /**
  * Controller that is the parent of all entity controllers.
@@ -125,7 +126,7 @@ public abstract class VanillaActionController extends ActionController implement
 
 		// Check controller health, send messages to the client based on current state.
 		if (health <= 0) {
-			broadcastPacket(new EntityStatusMessage(getParent().getId(), EntityStatusMessage.ENTITY_DEAD));
+			VanillaNetworkUtil.broadcastPacket(new EntityStatusMessage(getParent().getId(), EntityStatusMessage.ENTITY_DEAD));
 			if (!(this instanceof PlayerController)) {
 				getParent().kill();
 			}

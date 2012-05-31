@@ -36,8 +36,7 @@ import org.spout.vanilla.controller.VanillaControllerType;
 import org.spout.vanilla.controller.source.DamageCause;
 import org.spout.vanilla.material.VanillaMaterials;
 import org.spout.vanilla.protocol.msg.EntityMetadataMessage;
-
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.broadcastPacket;
+import org.spout.vanilla.util.VanillaNetworkUtil;
 
 public abstract class Creature extends Living {
 	private long timeUntilAdult = 0;
@@ -56,7 +55,7 @@ public abstract class Creature extends Living {
 			if (timeUntilAdult >= 0) {
 				List<Parameter<?>> parameters = new ArrayList<Parameter<?>>(1);
 				parameters.add(EntityMetadataMessage.Parameters.META_BABYANIMALSTAGE.get());
-				broadcastPacket(new EntityMetadataMessage(getParent().getId(), parameters));
+				VanillaNetworkUtil.broadcastPacket(new EntityMetadataMessage(getParent().getId(), parameters));
 			}
 		}
 

@@ -42,7 +42,7 @@ import org.spout.vanilla.controller.object.Substance;
 import org.spout.vanilla.material.VanillaMaterials;
 import org.spout.vanilla.protocol.msg.CollectItemMessage;
 
-import static org.spout.vanilla.protocol.VanillaNetworkSynchronizer.sendPacketsToNearbyPlayers;
+import static org.spout.vanilla.util.VanillaNetworkUtil.sendPacketsToNearbyPlayers;
 
 /**
  * Controller that serves as the base for all items that are not in an inventory (dispersed in the world).
