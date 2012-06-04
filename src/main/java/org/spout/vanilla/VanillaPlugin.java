@@ -30,6 +30,7 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.spout.api.Client;
 import org.spout.api.Engine;
 import org.spout.api.Server;
 import org.spout.api.Spout;
@@ -50,6 +51,7 @@ import org.spout.api.protocol.Protocol;
 import org.spout.api.scheduler.TaskPriority;
 
 import org.spout.vanilla.command.AdministrationCommands;
+import org.spout.vanilla.command.ClientCommands;
 import org.spout.vanilla.command.TestCommands;
 import org.spout.vanilla.configuration.VanillaConfiguration;
 import org.spout.vanilla.configuration.WorldConfiguration;
@@ -101,6 +103,10 @@ public class VanillaPlugin extends CommonPlugin {
 			game.getRootCommand().addSubCommands(this, TestCommands.class, commandRegFactory);
 		}
 
+		if (game instanceof Client) {
+			game.getRootCommand().addSubCommands(this, ClientCommands.class, commandRegFactory);
+		}
+
 		//Configuration
 		VanillaBlockMaterial.REDSTONE_POWER_MAX = (short) VanillaConfiguration.REDSTONE_MAX_RANGE.getInt();
 		VanillaBlockMaterial.REDSTONE_POWER_MIN = (short) VanillaConfiguration.REDSTONE_MIN_RANGE.getInt();
@@ -136,6 +142,8 @@ public class VanillaPlugin extends CommonPlugin {
 			}
 
 			((Server) game).bind(new InetSocketAddress(split[0], port), new VanillaBootstrapProtocol());
+		} else if (game instanceof Client) {
+			((Client) game).setBootstrapProtocol(new VanillaBootstrapProtocol());
 		}
 		//TODO if (game instanceof Client) do stuff?
 

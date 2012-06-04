@@ -35,6 +35,7 @@ import org.spout.api.event.EventHandler;
 import org.spout.api.event.Listener;
 import org.spout.api.event.Order;
 import org.spout.api.event.Result;
+import org.spout.api.event.client.ConnectionOpenEvent;
 import org.spout.api.event.entity.EntityHealthChangeEvent;
 import org.spout.api.event.entity.EntitySpawnEvent;
 import org.spout.api.event.player.PlayerJoinEvent;
@@ -60,6 +61,7 @@ import org.spout.vanilla.controller.source.HealthChangeReason;
 import org.spout.vanilla.controller.world.RegionSpawner;
 import org.spout.vanilla.material.VanillaMaterials;
 import org.spout.vanilla.protocol.VanillaNetworkSynchronizer;
+import org.spout.vanilla.protocol.msg.HandshakeMessage;
 import org.spout.vanilla.protocol.msg.UpdateHealthMessage;
 import org.spout.vanilla.runnable.BlockScheduler;
 import org.spout.vanilla.util.VanillaPlayerUtil;
@@ -172,5 +174,11 @@ public class VanillaListener implements Listener {
 			health += (short) event.getChange();
 			sendPacket(sp.getPlayer(), new UpdateHealthMessage(health, sp.getHunger(), sp.getFoodSaturation()));
 		}
+	}
+
+	@EventHandler(order = Order.EARLIEST)
+	public void onConnectionOpen(ConnectionOpenEvent event) {
+		System.out.println(event.toString());
+		event.getSession().send(new HandshakeMessage("Player;localhost;25565"), true);
 	}
 }

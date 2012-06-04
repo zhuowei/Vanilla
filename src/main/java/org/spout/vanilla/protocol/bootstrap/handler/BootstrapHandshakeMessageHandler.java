@@ -30,11 +30,13 @@ import org.spout.api.player.Player;
 import org.spout.api.protocol.MessageHandler;
 import org.spout.api.protocol.Session;
 
+import org.spout.vanilla.VanillaPlugin;
 import org.spout.vanilla.protocol.msg.HandshakeMessage;
+import org.spout.vanilla.protocol.msg.LoginRequestMessage;
 
 public class BootstrapHandshakeMessageHandler extends MessageHandler<HandshakeMessage> {
 	@Override
-	public void handle(Session session, Player player, HandshakeMessage message) {
+	public void handleServer(Session session, Player player, HandshakeMessage message) {
 		Session.State state = session.getState();
 		if (state == Session.State.EXCHANGE_HANDSHAKE) {
 			session.setState(Session.State.EXCHANGE_IDENTIFICATION);
@@ -44,6 +46,17 @@ public class BootstrapHandshakeMessageHandler extends MessageHandler<HandshakeMe
 			//} else {
 			session.send(new HandshakeMessage("-"), true);
 			//}
+		} else {
+			session.disconnect("Handshake already exchanged.", false);
+		}
+	}
+
+	@Override
+	public void handleClient(Session session, Player player, HandshakeMessage message) {
+		Session.State state = session.getState();
+		if (state == Session.State.EXCHANGE_HANDSHAKE) {
+			session.setState(Session.State.EXCHANGE_IDENTIFICATION);
+			session.send(new LoginRequestMessage(VanillaPlugin.MINECRAFT_PROTOCOL_ID, "Player", 0, 0, 0, 0, 0, ""), true);
 		} else {
 			session.disconnect("Handshake already exchanged.", false);
 		}

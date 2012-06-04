@@ -71,6 +71,13 @@ import org.spout.vanilla.protocol.msg.RespawnMessage;
 import org.spout.vanilla.protocol.msg.UpdateSignMessage;
 import org.spout.vanilla.protocol.msg.WindowClickMessage;
 
+import org.spout.vanilla.protocol.bootstrap.handler.BootstrapHandshakeMessageHandler;
+import org.spout.vanilla.protocol.bootstrap.handler.BootstrapLoginRequestMessageHandler;
+import org.spout.vanilla.protocol.bootstrap.handler.BootstrapPingMessageHandler;
+import org.spout.vanilla.protocol.msg.HandshakeMessage;
+import org.spout.vanilla.protocol.msg.LoginRequestMessage;
+import org.spout.vanilla.protocol.msg.ServerListPingMessage;
+
 public class VanillaHandlerLookupService extends HandlerLookupService {
 	public VanillaHandlerLookupService() {
 		super();
@@ -98,6 +105,9 @@ public class VanillaHandlerLookupService extends HandlerLookupService {
 			bind(EntityInteractionMessage.class, EntityInteractionMessageHandler.class);
 			bind(EntityHeadYawMessage.class, EntityHeadYawMessageHandler.class);
 			bind(PlayerAbilityMessage.class, PlayerAbilityMessageHandler.class);
+			bind(HandshakeMessage.class, BootstrapHandshakeMessageHandler.class);
+			bind(LoginRequestMessage.class, BootstrapLoginRequestMessageHandler.class);
+			bind(ServerListPingMessage.class, BootstrapPingMessageHandler.class);
 		} catch (Exception ex) {
 			throw new ExceptionInInitializerError(ex);
 		}

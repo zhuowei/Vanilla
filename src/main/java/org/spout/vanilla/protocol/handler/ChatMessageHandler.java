@@ -48,4 +48,9 @@ public final class ChatMessageHandler extends MessageHandler<ChatMessage> {
 			player.chat(text);
 		}
 	}
+
+	@Override
+	public void handleClient(Session session, Player player, ChatMessage message) {
+		System.out.println(message.getMessage());
+	}
 }

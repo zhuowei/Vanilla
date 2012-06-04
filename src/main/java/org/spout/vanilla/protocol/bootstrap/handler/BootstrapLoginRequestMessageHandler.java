@@ -37,7 +37,7 @@ import org.spout.vanilla.protocol.msg.LoginRequestMessage;
 
 public class BootstrapLoginRequestMessageHandler extends MessageHandler<LoginRequestMessage> {
 	@Override
-	public void handle(Session session, Player player, LoginRequestMessage message) {
+	public void handleServer(Session session, Player player, LoginRequestMessage message) {
 		if (message.getId() > VanillaPlugin.MINECRAFT_PROTOCOL_ID) {
 			session.disconnect("Outdated server!", false);
 		}
@@ -46,5 +46,12 @@ public class BootstrapLoginRequestMessageHandler extends MessageHandler<LoginReq
 		}
 		Event event = new PlayerConnectEvent(session, message.getName());
 		session.getGame().getEventManager().callEvent(event);
+	}
+	@Override
+	public void handleClient(Session session, Player player, LoginRequestMessage message) {
+		session.setState(Session.State.GAME);
+		Event event = new PlayerConnectEvent(session, message.getName());
+		session.getGame().getEventManager().callEvent(event);
+		System.out.println(message);
 	}
 }
